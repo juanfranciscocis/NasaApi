@@ -5,15 +5,20 @@ const nasaService = require('../services/nasaService');
 /* GET Mars Rover photos */
 router.get('/mars_rover', async function(req, res, next) {
     try {
-        // Get query parameters with defaults
-        const rover = req.query.rover || 'curiosity';
-        const camera = req.query.camera || null;
-        const sol = req.query.sol || 1000;
+        // Get parameters from JSON body with defaults
+        const rover = req.body.rover || 'curiosity';
+
+        let camera = req.body.camera || null;
+        if (camera === 'ALL') {
+            camera = null;
+        }
+
+        const sol = req.body.sol || 1000;
 
         // Call the NASA service
         const roverData = await nasaService.getMarsRoverPhotos(rover, camera, sol);
 
-        //Return results as JSON
+        // Return results as JSON
         res.send(
             roverData.photos.map(photo => ({
                 id: photo.id,
@@ -30,7 +35,7 @@ router.get('/mars_rover', async function(req, res, next) {
                     status: photo.rover.status
                 }
             }))
-        )
+        );
 
     } catch (error) {
         console.error('Error in Mars Rover route:', error);
@@ -38,10 +43,9 @@ router.get('/mars_rover', async function(req, res, next) {
     }
 });
 
-/* GET Astronomy Picture of the Day */
 router.get('/picture_of_day', async function(req, res, next) {
     try {
-        const date = req.query.date || null;
+        const date = req.body.date || null;
         const apodData = await nasaService.getAstronomyPictureOfDay(date);
 
         res.send(
@@ -53,7 +57,7 @@ router.get('/picture_of_day', async function(req, res, next) {
                 media_type: apodData.media_type,
                 hdurl: apodData.hdurl || null
             }
-        )
+        );
     } catch (error) {
         console.error('Error in APOD route:', error);
         next(error);
