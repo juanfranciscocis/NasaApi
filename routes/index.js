@@ -3,7 +3,7 @@ const router = express.Router();
 const nasaService = require('../services/nasaService');
 
 /* GET Mars Rover photos */
-router.get('/mars_rover', async function(req, res, next) {
+router.post('/mars_rover', async function(req, res, next) {
     try {
         // Get parameters from JSON body with defaults
         const rover = req.body.rover || 'curiosity';
@@ -43,7 +43,7 @@ router.get('/mars_rover', async function(req, res, next) {
     }
 });
 
-router.get('/picture_of_day', async function(req, res, next) {
+router.post('/picture_of_day', async function(req, res, next) {
     try {
         const date = req.body.date || null;
         const apodData = await nasaService.getAstronomyPictureOfDay(date);
