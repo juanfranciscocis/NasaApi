@@ -1,10 +1,9 @@
 // services/nasaService.js
 const axios = require('axios');
 
-const NASA_API_BASE_URL = 'https://api.nasa.gov';
+const NASA_API_BASE_URL = process.env.NASA_API_BASE_URL
 
-const NASA_API_KEY = 'ul4xVTCr84zSbOLfYmQrtfR143u4cPedSgssO7Vl';
-
+const NASA_API_KEY = process.env.NASA_API_KEY;
 class NasaService {
     async getMarsRoverPhotos(rover = 'curiosity', camera = null, sol = 1000, earthDate = null) {
         try {
